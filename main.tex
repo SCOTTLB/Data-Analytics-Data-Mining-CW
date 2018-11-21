@@ -1,0 +1,145 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% LaTeX Template: Project Titlepage Modified (v 0.1) by rcx
+%
+% Original Source: http://www.howtotex.com
+% Date: February 2014
+% 
+% This is a title page template which be used for articles & reports.
+% 
+% This is the modified version of the original Latex template from
+% aforementioned website.
+% 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\documentclass[12pt]{article}
+\usepackage[a4paper]{geometry}
+\usepackage[myheadings]{fullpage}
+\usepackage{fancyhdr}
+\usepackage{lastpage}
+\usepackage{graphicx, wrapfig, subcaption, setspace, booktabs}
+\usepackage[T1]{fontenc}
+\usepackage[font=small, labelfont=bf]{caption}
+\usepackage{fourier}
+\usepackage[protrusion=true, expansion=true]{microtype}
+\usepackage[english]{babel}
+\usepackage{sectsty}
+\usepackage{url, lipsum}
+\usepackage{multirow}
+
+
+\newcommand{\HRule}[1]{\rule{\linewidth}{#1}}
+\onehalfspacing
+\setcounter{tocdepth}{5}
+\setcounter{secnumdepth}{5}
+
+% Get the month and the year
+\usepackage{datetime}
+\newdateformat{monthyeardate}{
+  \monthname[\THEMONTH], \THEYEAR
+  }
+
+%-------------------------------------------------------------------------------
+% HEADER & FOOTER
+%-------------------------------------------------------------------------------
+\pagestyle{fancy}
+\fancyhf{}
+\setlength\headheight{15pt}
+\fancyhead[L]{40274024}
+\fancyhead[R]{Edinburgh Napier University}
+\fancyfoot[R]{Page \thepage\ of \pageref{LastPage}}
+%-------------------------------------------------------------------------------
+% TITLE PAGE
+%-------------------------------------------------------------------------------
+
+\begin{document}
+
+\title{ \normalsize \textsc{SET09120 Data Analytics}
+		\\ [2.0cm]
+		\HRule{0.5pt} \\
+		\LARGE \textbf{\uppercase{Data Mining}}
+		\HRule{2pt} \\ [0.5cm]
+		\normalsize \monthyeardate\today \vspace*{5\baselineskip}}
+
+\author{
+		40274024 \\ 
+		Edinburgh Napier University \\
+		School of Computing 
+		\date{}}
+
+\maketitle
+
+\newpage
+
+%-------------------------------------------------------------------------------
+% Section title formatting
+\sectionfont{\scshape}
+%-------------------------------------------------------------------------------
+
+%-------------------------------------------------------------------------------
+% BODY
+%-------------------------------------------------------------------------------
+
+\section{Introduction}
+The aim of this coursework was to prepare and analyse a given dataset using a variety of different algorithms. Four categories of algorithms were used and then 6 rules were produced per algorithms. OpenRefine was used in order to clean the given data and Weka was used for analysis.
+
+%-------------------------------------------------------------------------------
+% Cleaning
+%-------------------------------------------------------------------------------
+
+\section{Data Preparation}
+\subsection{Data cleaning}
+OpenRefine was used in order to clean the provided dataset and allow it to be exported in an error free format for analysis.
+Some values in the data had to be changed in order to fix any errors, such as typos.
+
+\begin{table}[h!]
+\centering
+\begin{tabular}{|c|c|c|}
+\hline
+\multicolumn{1}{|l|}{Error Column} & Error Type & \multicolumn{1}{r|}{Qty of Errors} \\ \hline
+purpose & Spelling errors & 4 \\
+credit\_amount & Out of range numbers & 7 \\
+age & typos, numbers out of range & 4 \\
+job & typos, invalid values & 1 \\ \hline
+\end{tabular}
+\caption{Data Cleaning errors}
+\label{fig:data_cleaning}
+\end{table}
+
+Typos were corrected to bring them in line with the same style as the rest of the data and capital letters were removed. Erratic values were corrected by inferring an average value based on trends within the data. Other attributes were also taken into consideration when inferring values such as the reason for the loan, age and employment status. Detailed data corrections can be seen in Table~\ref{fig:error_corrections}.
+
+\begin{table}[]
+\centering
+\begin{tabular}{|c|c|c|}
+\hline
+Column & Incorrect data & Correction \\ \hline
+\multirow{8}{*}{credit\_amount} & 111328000 & 8582 (inferred from data) \\
+ & 13580000 & 8582 (inferred from data) \\
+ & 63610000 & 6361 \\
+ & 19280000 & 1928 \\
+ & 13860000 & 1386 \\
+ & 5180000 & 518 \\
+ & 5850000 & 585 \\
+ & 7190000 & 7190 \\ \hline
+\multirow{4}{*}{age} & - values & removed - \\
+ & decimal values & removed decimal and mantissa \\
+ & 1 & 19 (inferred from data) \\
+ & 6 & 26 (inferred from data) \\ \hline
+job & yes & skilled (inferred from data) \\ \hline
+\end{tabular}
+\caption{Error corrections}
+\label{fig:error_corrections}
+\end{table}
+
+\subsection{Data conversion}
+%-------------------------------------------------------------------------------
+% Analysis
+%-------------------------------------------------------------------------------
+\section{Data Analytics}
+\subsection{Classification}
+\subsection{Regression}
+\subsection{Association}
+\subsection{Clustering}
+
+\section{Conclusion}
+\end{document}
+
