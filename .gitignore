@@ -1,0 +1,6 @@
+*.csv
+*.arff
+.DS_Store
+*.zip
+*.xlsx
+
