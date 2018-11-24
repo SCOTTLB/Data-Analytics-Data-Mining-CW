@@ -161,13 +161,13 @@ The dataset that was provided was given in Micorosoft's XLSX format, this had to
 J48 -C 0.25 -M 2
 \end{lstlisting}
 
-The cleaned dataset was analysed using the J48 classification algorithm. J48 was chosen as it outputs decision trees that can easily be visualised and rules can be drawn from it. The algorithm was run on the job attribute with the setting shown in Listing~\ref{fig:j48_config}. In order to produce a usable tree the 'case\_no', 'checking\_status', 'personal\_status' and 'class' attributes were excluded from the tree. The algorithm produced a pruned tree with 18 nodes and 15 leaves, the resulting rules that can be seen from the tree are shown in Listing~\ref{fig:j48_rules}. The model produced accurately classifies 65.5\ref{})
+The cleaned dataset was analysed using the J48 classification algorithm. J48 was chosen as it outputs decision trees that can easily be visualised and rules can be drawn from it. The algorithm was run on the job attribute with the setting shown in Listing~\ref{fig:j48_config}. In order to produce a usable tree the 'case\_no', 'checking\_status', 'personal\_status' and 'class' attributes were excluded from the tree. The algorithm produced a pruned tree with 18 nodes and 15 leaves, the resulting rules that can be seen from the tree are shown in Listing~\ref{fig:j48_rules}. The model produced accurately classifies 65.5\% of cases, this is relatively low and can also be seen in the confusion matrix (Figure:~\ref{fig:j48_conf_matrix}). The confusion matrix shows that only 6 cases of A were incorrectly classified where as all 200 cases of B (unskilled resident) were incorrectly classified. In C (high qualif/self emp/mgmt) it can be seen that 31 cases out of 148 were correctly classified by this model and lastly in D (unemp/unskilled non res) nothing was correctly classified. These large margins of error, especially B, are the reason for the low overall accuracy of the model however some general rules can still be created. The low overall score of this model also, in turn, brings down the accuracy of the rules.
 
 \begin{figure}
     \centering
-    \includegraphics{}
-    \caption{Caption}
-    \label{fig:my_label}
+    \includegraphics[scale=0.75]{img/conf_matrix.png}
+    \caption{J48 Confusion matrix}
+    \label{fig:j48_conf_matrix}
 \end{figure}
 
 \begin{lstlisting}[caption="J48 rules"\label{fig:j48_rules}]
@@ -184,7 +184,10 @@ Rule 2 shows that if they are asking for a loan larger than 4380 and they have b
 
 Rule 3 states that if they are asking for a loan greater than 4380, they have been employed for more than 7 years and they are using the loan to buy a new car then they are in a highly qualified/self employed/management job. This is the case for 26.67\% of the occurrences.
 
-\subsection{Regression}
+Rule 4 shows us that if they are asking for a loan greater than 4380, been employed for more than 7 years and are looking to use the loan to buy a used car they are in a skilled job. This rule is 45\% accurate.
+
+Rule 5 states that if they are asking for a loan greater than 4380, have been employed for between 4 and 7 years then they are in a skilled job. 36.17\% of cases are correctly classified by this rule.
+
 
 \subsection{Association}
 
