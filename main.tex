@@ -25,6 +25,19 @@
 \usepackage{sectsty}
 \usepackage{url, lipsum}
 \usepackage{multirow}
+\usepackage{listings}
+
+\usepackage{lmodern}  % for bold teletype font
+\usepackage{amsmath}  % for \hookrightarrow
+\usepackage{xcolor}   % for \textcolor
+
+\lstset{
+  basicstyle=\ttfamily,
+  columns=fullflexible,
+  frame=single,
+  breaklines=true,
+  postbreak=\mbox{\textcolor{red}{$\hookrightarrow$}\space},
+}
 
 
 \newcommand{\HRule}[1]{\rule{\linewidth}{#1}}
@@ -80,7 +93,7 @@
 %-------------------------------------------------------------------------------
 
 \section{Introduction}
-The aim of this coursework was to prepare and analyse a given dataset using a variety of different algorithms. Four categories of algorithms were used and then 6 rules were produced per algorithms. OpenRefine was used in order to clean the given data and Weka was used for analysis.
+The aim of this coursework was to prepare and analyse a given dataset using machine learning and data mining. A variety of different algorithms were used that covered classification, clustering, association and regression. The data was analysed for relationships and patterns and a set of rules were produced per algorithms in order to better define these. OpenRefine was used to prepare and clean the data. Two ARFF files were created, a full dataset with numeric and nominal values a nominal only dataset. Weka was used for the machine learning analysis.
 
 %-------------------------------------------------------------------------------
 % Cleaning
@@ -107,7 +120,7 @@ job & typos, invalid values & 1 \\ \hline
 
 Typos were corrected to bring them in line with the same style as the rest of the data and capital letters were removed. Erratic values were corrected by inferring an average value based on trends within the data. Other attributes were also taken into consideration when inferring values such as the reason for the loan, age and employment status. Detailed data corrections can be seen in Table~\ref{fig:error_corrections}.
 
-\begin{table}[]
+\begin{table}
 \centering
 \begin{tabular}{|c|c|c|}
 \hline
@@ -123,6 +136,8 @@ Column & Incorrect data & Correction \\ \hline
 \multirow{4}{*}{age} & - values & removed - \\
  & decimal values & removed decimal and mantissa \\
  & 1 & 19 (inferred from data) \\
+ & 222 & 22 (input error) \\
+ & 333 & 33 (input error) \\
  & 6 & 26 (inferred from data) \\ \hline
 job & yes & skilled (inferred from data) \\ \hline
 \end{tabular}
@@ -130,14 +145,78 @@ job & yes & skilled (inferred from data) \\ \hline
 \label{fig:error_corrections}
 \end{table}
 
+A second copy of the cleaned data was produced with the numeric values converted to nominal values to allow associate algorithms such as Apriori to be used.
+
 \subsection{Data conversion}
+The dataset that was provided was given in Micorosoft's XLSX format, this had to be converted to an Attribute-Relation File Format (ARFF) in order to be processed by Weka. OpenRefine accepts XLSX format so this was used at the data cleaning stage then outputted to a comma separated value file (csv). Weka contains a built in tool, called ARFF viewer, that converts csv files to ARFF. The case number column was left in the data however the column was removed in Weka to allow appropriate rules to be created.
 %-------------------------------------------------------------------------------
 % Analysis
 %-------------------------------------------------------------------------------
 \section{Data Analytics}
 \subsection{Classification}
+% talk about accuracy and confusion matrix a= good b= bad 
+% pruning
+
+\begin{lstlisting}[caption="J48 configuration"\label{fig:j48_config}]
+J48 -C 0.25 -M 2
+\end{lstlisting}
+
+The cleaned dataset was analysed using the J48 classification algorithm. J48 was chosen as it outputs decision trees that can easily be visualised and rules can be drawn from it. The algorithm was run on the job attribute with the setting shown in Listing~\ref{fig:j48_config}. In order to produce a usable tree the 'case\_no', 'checking\_status', 'personal\_status' and 'class' attributes were excluded from the tree. The algorithm produced a pruned tree with 18 nodes and 15 leaves, the resulting rules that can be seen from the tree are shown in Listing~\ref{fig:j48_rules}. The model produced accurately classifies 65.5\ref{})
+
+\begin{figure}
+    \centering
+    \includegraphics{}
+    \caption{Caption}
+    \label{fig:my_label}
+\end{figure}
+
+\begin{lstlisting}[caption="J48 rules"\label{fig:j48_rules}]
+1. IF credit amount <= 4380 THEN job=skilled
+2. IF credit amount > 4380 AND employment=<1 THEN job=skilled
+3. IF credit amount > 4380 AND employment=>7 AND purpose=new car THEN job=high qualif/self emp/mgmt
+4. IF credit amount > 4380 AND employment=>7 AND purpose=used car THEN job=skilled
+5. IF credit amount > 4380 AND employment= 4<=X<7 THEN job=skilled
+\end{lstlisting}
+
+Rule 1 states that if someone is asking for a credit amount of less than or equal to 4380 then they have a skilled job, this rule is true for 34.49\% of cases in the dataset. 
+
+Rule 2 shows that if they are asking for a loan larger than 4380 and they have been employed for less than a year they are a in a skilled job. This rule is correct in 35.48\% of cases.
+
+Rule 3 states that if they are asking for a loan greater than 4380, they have been employed for more than 7 years and they are using the loan to buy a new car then they are in a highly qualified/self employed/management job. This is the case for 26.67\% of the occurrences.
+
 \subsection{Regression}
+
 \subsection{Association}
+
+\begin{lstlisting}[caption="Apriori configuration"\label{fig:apriori_config}]
+Apriori -N 6 -T 0 -C 0.9 -D 0.05 -U 1.0 -M 0.1 -S -1.0 -c -1
+\end{lstlisting}
+\begin{lstlisting}[caption="Apriori rules"\label{fig:apriori_rules}]
+1. IF checking_status=no checking AND purpose=radio/tv THEN class=good 
+    (Confidence = 94%)
+2. IF checking_status=no checking AND credit_history=critical/other existing credit THEN class=good 
+    (Confidence = 93%)
+3. IF checking_status=no checking AND employment=>=7 THEN class=good 
+    (Confidence = 93%)
+4. IF checking_status=no checking AND personal_status=male single AND job=skilled THEN  class=good 
+    (Confidence = 92%)
+5. IF checking_status=no checking AND credit_history=existing paid AND job=skilled THEN class=good 
+    (Confidence = 90%)
+
+\end{lstlisting}
+The Apriori algorithm was run on a nominal version of the dataset. The settings that have been used can be seen in Listing~\ref{fig:apriori_config}. 5 rules were produced that show some interesting patterns in the data these can be seen in Listing~\ref{fig:apriori_rules}. Each rule produces a relatively high confidence level with the lowest being 90\%, this shows that 90\% of the data matches this rule. 
+
+Rule 1 shows us that if a person has no current account with the bank and is applying for a loan for a TV or radio they are considered a good person to lend to, 94\% of the data matches this description.
+
+Rule 2 shows that if even if someone has no current account with the bank they are a good person to lend to even if their credit history is critical or other debts exist at a different bank.
+
+Rule 3 shows that if someone has no current account with the bank but they have been employed for 7 or more years then they are a good person to lend to.
+
+Rule 4 shows that if someone has no current account with the bank but they are a male in a skilled profession then they care a good person to lend money to.
+
+Rule 5 shows that if someone has no current account with the bank but they have paid back all their previous debts on time and have a skilled job the bank can lend them money.
+
+% change confidence
 \subsection{Clustering}
 
 \section{Conclusion}
