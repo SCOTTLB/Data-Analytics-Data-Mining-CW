@@ -188,7 +188,6 @@ Rule 4 shows us that if they are asking for a loan greater than 4380, been emplo
 
 Rule 5 states that if they are asking for a loan greater than 4380, have been employed for between 4 and 7 years then they are in a skilled job. 36.17\% of cases are correctly classified by this rule.
 
-
 \subsection{Association}
 
 \begin{lstlisting}[caption="Apriori configuration"\label{fig:apriori_config}]
@@ -221,7 +220,37 @@ Rule 5 shows that if someone has no current account with the bank but they have 
 
 % change confidence
 \subsection{Clustering}
+SimpleKMeans is a clustering algorithm that was run on the data in order to determine groups of conditions that relate to each other. 6 different clusters were produced by the algorithm with the following settings (Listing~\ref{fig:simplekmeans_config}). Clusters were built on the 'purpose', 'employment', 'age' and 'job' attributes and 5 patterns were drawn from the clusters. These can be seen in the table below.
+
+\begin{lstlisting}[caption="SimpleKMeans configuration"\label{fig:simplekmeans_config}]
+SimpleKMeans -init 0 -max-candidates 100 -periodic-pruning 10000 -min-density 2.0 -t1 -1.25 -t2 -1.0 -N 6 -A "weka.core.EuclideanDistance -R first-last" -I 500 -num-slots 1 -S 10
+\end{lstlisting}
+
+
+\begin{table}[h!]
+\centering
+\label{fig:simplekmeans_rules}
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{|c|c|}
+\hline
+Cluster & Overview \\ \hline
+1 & \begin{tabular}[c]{@{}c@{}}This is a group of people who have been working in a skilled job between 1-4 years.\\ They are around age 28 and are looking to get a loan for a new car.\end{tabular} \\ \hline
+2 & \begin{tabular}[c]{@{}c@{}}This is a group of people who are currently unemployed but they are highly qualified/self employed/management.\\ They are around age 42 and are looking to get a loan for a used car.\end{tabular} \\ \hline
+3 & \begin{tabular}[c]{@{}c@{}}This is a group of people who are unskilled residents who have been working for 7 or more years.\\ They are around age 40 and are looking to get a loan for a radio or tv.\end{tabular} \\ \hline
+4 & \begin{tabular}[c]{@{}c@{}}This is a group of people who have been working in a skilled job for 7 or more years.\\ They are around age 42 and are looking to get a loan for furniture.\end{tabular} \\ \hline
+5 & \begin{tabular}[c]{@{}c@{}}This is a group of people who have been working in a skilled job between 1-4 years.\\ They are around age 32 and are looking to get a loan for a radio.
+\end{tabular} \\ \hline
+\end{tabular}%
+}
+\end{table}
+
+
 
 \section{Conclusion}
+There are many different approaches to analysing data through the use of data mining and machine learning. These approaches come with their own advantages and disadvantage, for instance, clustering can single out interesting points that can help distinguish groups apart from one another. J48, in comparison to clustering, allows a decision tree to be produced and the rules can be presented in a visual format making it easy to see clear patterns. 
+
+From the resulting rules it can be seen that the majority of loans and loan approvals go to people with a skilled job, highly skilled/self employed/management professionals also are often approved. 
+
+
 \end{document}
 
