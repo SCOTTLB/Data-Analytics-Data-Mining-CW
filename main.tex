@@ -4,10 +4,10 @@
 % Original Source: http://www.howtotex.com
 % Date: February 2014
 % 
-% This is a title page template which be used for articles & reports.
+% This is a title page template which is used for articles & reports.
 % 
 % This is the modified version of the original Latex template from
-% aforementioned website.
+% the aforementioned website.
 % 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -67,17 +67,17 @@
 \begin{document}
 
 \title{ \normalsize \textsc{SET09120 Data Analytics}
-		\\ [2.0cm]
-		\HRule{0.5pt} \\
-		\LARGE \textbf{\uppercase{Data Mining}}
-		\HRule{2pt} \\ [0.5cm]
-		\normalsize \monthyeardate\today \vspace*{5\baselineskip}}
+        \\ [2.0cm]
+        \HRule{0.5pt} \\
+        \LARGE \textbf{\uppercase{Data Mining}}
+        \HRule{2pt} \\ [0.5cm]
+        \normalsize \monthyeardate\today \vspace*{5\baselineskip}}
 
 \author{
-		40274024 \\ 
-		Edinburgh Napier University \\
-		School of Computing 
-		\date{}}
+        40274024 \\ 
+        Edinburgh Napier University \\
+        School of Computing 
+        \date{}}
 
 \maketitle
 
@@ -101,7 +101,7 @@ The aim of this coursework was to prepare and analyse a given dataset using mach
 
 \section{Data Preparation}
 \subsection{Data cleaning}
-OpenRefine was used in order to clean the provided dataset and allow it to be exported in an error free format for analysis.
+OpenRefine was used in order to clean the provided dataset and allow it to be exported in an error-free format for analysis.
 Some values in the data had to be changed in order to fix any errors, such as typos.
 
 \begin{table}[h!]
@@ -118,7 +118,7 @@ job & typos, invalid values & 1 \\ \hline
 \label{fig:data_cleaning}
 \end{table}
 
-Typos were corrected to bring them in line with the same style as the rest of the data and capital letters were removed. Erratic values were corrected by inferring an average value based on trends within the data. Other attributes were also taken into consideration when inferring values such as the reason for the loan, age and employment status. Detailed data corrections can be seen in Table~\ref{fig:error_corrections}.
+Typos were corrected to bring them in line with the same style as the rest of the data and capital letters were removed. Erratic values were corrected by inferring an average value based on trends within the data. Other attributes were also taken into consideration when inferring values such as the reason for the loan, age, and employment status. Detailed data corrections can be seen in Table~\ref{fig:error_corrections}.
 
 \begin{table}
 \centering
@@ -148,7 +148,7 @@ job & yes & skilled (inferred from data) \\ \hline
 A second copy of the cleaned data was produced with the numeric values converted to nominal values to allow associate algorithms such as Apriori to be used.
 
 \subsection{Data conversion}
-The dataset that was provided was given in Micorosoft's XLSX format, this had to be converted to an Attribute-Relation File Format (ARFF) in order to be processed by Weka. OpenRefine accepts XLSX format so this was used at the data cleaning stage then outputted to a comma separated value file (csv). Weka contains a built in tool, called ARFF viewer, that converts csv files to ARFF. The case number column was left in the data however the column was removed in Weka to allow appropriate rules to be created.
+The dataset that was provided was given in Microsoft's XLSX format, this had to be converted to an Attribute-Relation File Format (ARFF) in order to be processed by Weka. OpenRefine accepts XLSX format so this was used at the data cleaning stage then outputted to a comma separated value file (CSV). Weka contains a built-in tool, called ARFF viewer, that converts CSV files to ARFF. The case number column was left in the data however the column was removed in Weka to allow appropriate rules to be created.
 %-------------------------------------------------------------------------------
 % Analysis
 %-------------------------------------------------------------------------------
@@ -161,7 +161,7 @@ The dataset that was provided was given in Micorosoft's XLSX format, this had to
 J48 -C 0.25 -M 2
 \end{lstlisting}
 
-The cleaned dataset was analysed using the J48 classification algorithm. J48 was chosen as it outputs decision trees that can easily be visualised and rules can be drawn from it. The algorithm was run on the job attribute with the setting shown in Listing~\ref{fig:j48_config}. In order to produce a usable tree the 'case\_no', 'checking\_status', 'personal\_status' and 'class' attributes were excluded from the tree. The algorithm produced a pruned tree with 18 nodes and 15 leaves, the resulting rules that can be seen from the tree are shown in Listing~\ref{fig:j48_rules}. The model produced accurately classifies 65.5\% of cases, this is relatively low and can also be seen in the confusion matrix (Figure:~\ref{fig:j48_conf_matrix}). The confusion matrix shows that only 6 cases of A were incorrectly classified where as all 200 cases of B (unskilled resident) were incorrectly classified. In C (high qualif/self emp/mgmt) it can be seen that 31 cases out of 148 were correctly classified by this model and lastly in D (unemp/unskilled non res) nothing was correctly classified. These large margins of error, especially B, are the reason for the low overall accuracy of the model however some general rules can still be created. The low overall score of this model also, in turn, brings down the accuracy of the rules.
+The cleaned dataset was analysed using the J48 classification algorithm. J48 was chosen as it outputs decision trees that can easily be visualised and rules can be drawn from it. The algorithm was run on the job attribute with the setting shown in Listing~\ref{fig:j48_config}. In order to produce a usable tree the 'case\_no', 'checking\_status', 'personal\_status' and 'class' attributes were excluded from the tree. The algorithm produced a pruned tree with 18 nodes and 15 leaves, the resulting rules that can be seen from the tree are shown in Listing~\ref{fig:j48_rules}. The model produced accurately classifies 65.5\% of cases, this is relatively low and can also be seen in the confusion matrix (Figure:~\ref{fig:j48_conf_matrix}). The confusion matrix shows that only 6 cases of A were incorrectly classified whereas all 200 cases of B (unskilled resident) were incorrectly classified. In C (high qualif/self emp/mgmt) it can be seen that 31 cases out of 148 were correctly classified by this model and lastly in D (unemp/unskilled non res) nothing was correctly classified. These large margins of error, especially B, are the reason for the low overall accuracy of the model however some general rules can still be created. The low overall score of this model also, in turn, brings down the accuracy of the rules.
 
 \begin{figure}
     \centering
@@ -178,11 +178,11 @@ The cleaned dataset was analysed using the J48 classification algorithm. J48 was
 5. IF credit amount > 4380 AND employment= 4<=X<7 THEN job=skilled
 \end{lstlisting}
 
-Rule 1 states that if someone is asking for a credit amount of less than or equal to 4380 then they have a skilled job, this rule is true for 34.49\% of cases in the dataset. 
+Rule 1 states that if someone is asking for a credit amount of less than or equal to 4380 then he or she has a skilled job, this rule is true for 34.49\% of cases in the dataset. 
 
-Rule 2 shows that if they are asking for a loan larger than 4380 and they have been employed for less than a year they are a in a skilled job. This rule is correct in 35.48\% of cases.
+Rule 2 shows that if they are asking for a loan larger than 4380 and they have been employed for less than a year they are in a skilled job. This rule is correct in 35.48\% of cases.
 
-Rule 3 states that if they are asking for a loan greater than 4380, they have been employed for more than 7 years and they are using the loan to buy a new car then they are in a highly qualified/self employed/management job. This is the case for 26.67\% of the occurrences.
+Rule 3 states that if they are asking for a loan greater than 4380, they have been employed for more than 7 years and they are using the loan to buy a new car then they are in a highly qualified/ self-employed/management job. This is the case for 26.67\% of the occurrences.
 
 Rule 4 shows us that if they are asking for a loan greater than 4380, been employed for more than 7 years and are looking to use the loan to buy a used car they are in a skilled job. This rule is 45\% accurate.
 
@@ -210,13 +210,13 @@ The Apriori algorithm was run on a nominal version of the dataset. The settings 
 
 Rule 1 shows us that if a person has no current account with the bank and is applying for a loan for a TV or radio they are considered a good person to lend to, 94\% of the data matches this description.
 
-Rule 2 shows that if even if someone has no current account with the bank they are a good person to lend to even if their credit history is critical or other debts exist at a different bank.
+Rule 2 shows that if even if someone has no current account with the bank he or she is a good person to lend to even if his or her credit history is critical or other debts exist at a different bank.
 
-Rule 3 shows that if someone has no current account with the bank but they have been employed for 7 or more years then they are a good person to lend to.
+Rule 3 shows that if someone has no current account with the bank but he or she have been employed for 7 or more years then they are a good person to lend to.
 
-Rule 4 shows that if someone has no current account with the bank but they are a male in a skilled profession then they care a good person to lend money to.
+Rule 4 shows that if someone has no current account with the bank but they are a male in a skilled profession then they are a good person to lend money to.
 
-Rule 5 shows that if someone has no current account with the bank but they have paid back all their previous debts on time and have a skilled job the bank can lend them money.
+Rule 5 shows that if someone has no current account with the bank but he or she have paid back all their previous debts on time and have a skilled job the bank can lend them money.
 
 % change confidence
 \subsection{Clustering}
@@ -247,10 +247,11 @@ Cluster & Overview \\ \hline
 
 
 \section{Conclusion}
-There are many different approaches to analysing data through the use of data mining and machine learning. These approaches come with their own advantages and disadvantage, for instance, clustering can single out interesting points that can help distinguish groups apart from one another. J48, in comparison to clustering, allows a decision tree to be produced and the rules can be presented in a visual format making it easy to see clear patterns. 
+There are many different approaches to analysing data through the use of data mining and machine learning. These approaches come with their own advantages and disadvantage, for instance, clustering can single out interesting points that can help distinguish groups apart from one another. J48, in comparison to clustering, allows a decision tree to be produced and the rules can be presented in a visual format making it easy to see clear patterns. Association allows conclusions to be drawn from other surrounding attributes, this is clear by the rules it produces as each rule is dependent on another attribute to draw a conclusion. 
 
-From the resulting rules it can be seen that the majority of loans and loan approvals go to people with a skilled job, highly skilled/self employed/management professionals also are often approved. 
+Apriori produced the best rule sets out of all the algorithms as they had a high confidence percentage, in comparison to J48 that incorrectly classified a large majority of the dataset. Clustering allowed groups to be profiled and rules can be inferred from these profiles however the some of the clusters produced conflicting rules so weren't as reliable as the Apriori rules. 
 
+From the resulting rules, it can be seen that the majority of loans and loan approvals go to people with a skilled job, highly skilled/ self-employed/management professionals also are often approved. The bank will also approve loans to people who have no checking status in most cases. 
 
 \end{document}
 
