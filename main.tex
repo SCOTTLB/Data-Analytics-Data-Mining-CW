@@ -101,8 +101,9 @@ The aim of this coursework was to prepare and analyse a given dataset using mach
 
 \section{Data Preparation}
 \subsection{Data cleaning}
+
 OpenRefine was used in order to clean the provided dataset and allow it to be exported in an error-free format for analysis.
-Some values in the data had to be changed in order to fix any errors, such as typos.
+Some values in the data had to be changed in order to fix any errors, such as typos. 
 
 \begin{table}[h!]
 \centering
@@ -118,7 +119,7 @@ job & typos, invalid values & 1 \\ \hline
 \label{fig:data_cleaning}
 \end{table}
 
-Typos were corrected to bring them in line with the same style as the rest of the data and capital letters were removed. Erratic values were corrected by inferring an average value based on trends within the data. Other attributes were also taken into consideration when inferring values such as the reason for the loan, age, and employment status. Detailed data corrections can be seen in Table~\ref{fig:error_corrections}.
+Typos were corrected to bring them in line with the same style as the rest of the data and capital letters were removed. Erratic numeric values, that can easily be spotted in OpenRefine, were corrected by inferring an average value based on trends within the data. Other attributes were also taken into consideration when inferring values such as the reason for the loan, age, and employment status. Detailed data corrections can be seen in Table~\ref{fig:error_corrections}.
 
 \begin{table}
 \centering
@@ -148,7 +149,7 @@ job & yes & skilled (inferred from data) \\ \hline
 A second copy of the cleaned data was produced with the numeric values converted to nominal values to allow associate algorithms such as Apriori to be used.
 
 \subsection{Data conversion}
-The dataset that was provided was given in Microsoft's XLSX format, this had to be converted to an Attribute-Relation File Format (ARFF) in order to be processed by Weka. OpenRefine accepts XLSX format so this was used at the data cleaning stage then outputted to a comma separated value file (CSV). Weka contains a built-in tool, called ARFF viewer, that converts CSV files to ARFF. The case number column was left in the data however the column was removed in Weka to allow appropriate rules to be created.
+The dataset that was provided was given in Microsoft's XLSX format, this had to be converted to an Attribute-Relation File Format (ARFF) in order to be processed by Weka. OpenRefine accepts XLSX format so this was used at the data cleaning stage then outputted to a comma separated value file (CSV). Weka contains a built-in tool, called ARFF viewer, that converts CSV files to ARFF. The case number column was left in the data, however the column was removed in Weka to allow appropriate rules to be created.
 %-------------------------------------------------------------------------------
 % Analysis
 %-------------------------------------------------------------------------------
@@ -161,7 +162,7 @@ The dataset that was provided was given in Microsoft's XLSX format, this had to 
 J48 -C 0.25 -M 2
 \end{lstlisting}
 
-The cleaned dataset was analysed using the J48 classification algorithm. J48 was chosen as it outputs decision trees that can easily be visualised and rules can be drawn from it. The algorithm was run on the job attribute with the setting shown in Listing~\ref{fig:j48_config}. In order to produce a usable tree the 'case\_no', 'checking\_status', 'personal\_status' and 'class' attributes were excluded from the tree. The algorithm produced a pruned tree with 18 nodes and 15 leaves, the resulting rules that can be seen from the tree are shown in Listing~\ref{fig:j48_rules}. The model produced accurately classifies 65.5\% of cases, this is relatively low and can also be seen in the confusion matrix (Figure:~\ref{fig:j48_conf_matrix}). The confusion matrix shows that only 6 cases of A were incorrectly classified whereas all 200 cases of B (unskilled resident) were incorrectly classified. In C (high qualif/self emp/mgmt) it can be seen that 31 cases out of 148 were correctly classified by this model and lastly in D (unemp/unskilled non res) nothing was correctly classified. These large margins of error, especially B, are the reason for the low overall accuracy of the model however some general rules can still be created. The low overall score of this model also, in turn, brings down the accuracy of the rules.
+The cleaned dataset was analysed using the J48 classification algorithm. J48 was chosen as it outputs decision trees that can easily be visualised and rules can be drawn from it, it produces rules based on one resulting class. The algorithm was run on the job attribute with the setting shown in Listing~\ref{fig:j48_config}. In order to produce a usable tree the 'case\_no', 'checking\_status', 'personal\_status' and 'class' attributes were excluded from the tree. The algorithm produced a pruned tree with 18 nodes and 15 leaves, pruning is important as it removes any unnessisaty leaves from the tree decreasing the overall size of the tree. The resulting rules that can be seen from the tree are shown in Listing~\ref{fig:j48_rules}. The model produced accurately classifies 65.5\% of cases, this is relatively low and can also be seen in the confusion matrix (Figure:~\ref{fig:j48_conf_matrix}). The confusion matrix shows that only 6 cases of A were incorrectly classified whereas all 200 cases of B (unskilled resident) were incorrectly classified. In C (high qualif/self emp/mgmt) it can be seen that 31 cases out of 148 were correctly classified by this model and lastly in D (unemp/unskilled non res) nothing was correctly classified. These large margins of error, especially B, are the reason for the low overall accuracy of the model however some general rules can still be created. The low overall score of this model also, in turn, brings down the accuracy of the rules.
 
 \begin{figure}
     \centering
@@ -204,9 +205,9 @@ Apriori -N 6 -T 0 -C 0.9 -D 0.05 -U 1.0 -M 0.1 -S -1.0 -c -1
     (Confidence = 92%)
 5. IF checking_status=no checking AND credit_history=existing paid AND job=skilled THEN class=good 
     (Confidence = 90%)
-
 \end{lstlisting}
-The Apriori algorithm was run on a nominal version of the dataset. The settings that have been used can be seen in Listing~\ref{fig:apriori_config}. 5 rules were produced that show some interesting patterns in the data these can be seen in Listing~\ref{fig:apriori_rules}. Each rule produces a relatively high confidence level with the lowest being 90\%, this shows that 90\% of the data matches this rule. 
+
+The Apriori algorithm was run on a nominal version of the dataset. This allows patterns to be spotted by finding boolean rules within the data. The settings that have been used can be seen in Listing~\ref{fig:apriori_config}. 5 rules were produced that show some interesting patterns in the data these can be seen in Listing~\ref{fig:apriori_rules}. Each rule produces a relatively high confidence level with the lowest being 90\%, this shows that 90\% of the data matches this rule. 
 
 Rule 1 shows us that if a person has no current account with the bank and is applying for a loan for a TV or radio they are considered a good person to lend to, 94\% of the data matches this description.
 
